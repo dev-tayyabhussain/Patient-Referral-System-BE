@@ -250,17 +250,27 @@ const approveHospital = async (req, res) => {
 
         await hospital.approve(approverId);
 
+        // Also approve the hospital admin
+        const hospitalAdmin = await User.findOne({
+            hospitalId: hospitalId,
+            role: 'hospital_admin'
+        });
+
+        if (hospitalAdmin) {
+            hospitalAdmin.approvalStatus = 'approved';
+            hospitalAdmin.approvedBy = approverId;
+            hospitalAdmin.approvedAt = new Date();
+            await hospitalAdmin.save();
+        }
+
         // Send approval email to hospital admin
-        if (hospital.adminId) {
+        if (hospitalAdmin) {
             try {
-                const admin = await User.findById(hospital.adminId);
-                if (admin) {
-                    await sendEmail({
-                        email: admin.email,
-                        subject: 'Hospital Approved - MediNet',
-                        html: emailTemplates.hospitalApproved(hospital.name, message)
-                    });
-                }
+                await sendEmail({
+                    email: hospitalAdmin.email,
+                    subject: 'Hospital Approved - MediNet',
+                    html: emailTemplates.hospitalApproved(hospital.name, message)
+                });
             } catch (emailError) {
                 console.error('Email sending failed:', emailError);
             }

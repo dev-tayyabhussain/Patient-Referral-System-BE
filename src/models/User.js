@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         trim: true,
-        match: [/^[\+]?[1-9][\d]{0,15}$/, 'Please enter a valid phone number']
+        match: [/^[\+]?[1-9][\d\s\-\(\)]{0,20}$/, 'Please enter a valid phone number']
     },
     dateOfBirth: {
         type: Date

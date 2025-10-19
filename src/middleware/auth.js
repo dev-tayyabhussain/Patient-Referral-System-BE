@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { checkApprovalStatus } = require('./approval');
 
 // Protect routes - verify JWT token
 const protect = async (req, res, next) => {
@@ -113,9 +114,20 @@ const optionalAuth = async (req, res, next) => {
     next();
 };
 
+// Protect routes with approval check
+const protectWithApproval = async (req, res, next) => {
+    // First check authentication
+    await protect(req, res, (err) => {
+        if (err) return;
+        // Then check approval status
+        checkApprovalStatus(req, res, next);
+    });
+};
+
 module.exports = {
     protect,
     authorize,
     requireEmailVerification,
-    optionalAuth
+    optionalAuth,
+    protectWithApproval
 };
