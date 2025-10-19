@@ -72,9 +72,9 @@ const validateRegister = [
         .withMessage('Please provide a valid date of birth'),
 
     body('hospitalId')
-        .if(body('role').isIn(['hospital_admin', 'doctor']))
+        .if(body('role').equals('doctor'))
         .notEmpty()
-        .withMessage('Hospital ID is required for this role')
+        .withMessage('Hospital ID is required for doctors')
         .isMongoId()
         .withMessage('Invalid hospital ID format'),
 
@@ -96,6 +96,69 @@ const validateRegister = [
         .if(body('role').equals('doctor'))
         .isInt({ min: 0, max: 50 })
         .withMessage('Years of experience must be between 0 and 50'),
+
+    body('qualification')
+        .if(body('role').equals('doctor'))
+        .notEmpty()
+        .withMessage('Qualification is required for doctors')
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Qualification must be between 2 and 100 characters'),
+
+    // Hospital admin validations
+    body('department')
+        .if(body('role').equals('hospital_admin'))
+        .notEmpty()
+        .withMessage('Department is required for hospital admins')
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Department must be between 2 and 100 characters'),
+
+    body('position')
+        .if(body('role').equals('hospital_admin'))
+        .notEmpty()
+        .withMessage('Position is required for hospital admins')
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Position must be between 2 and 100 characters'),
+
+    // Patient validations
+    body('emergencyContact')
+        .if(body('role').equals('patient'))
+        .notEmpty()
+        .withMessage('Emergency contact name is required for patients')
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Emergency contact name must be between 2 and 100 characters'),
+
+    body('emergencyPhone')
+        .if(body('role').equals('patient'))
+        .notEmpty()
+        .withMessage('Emergency contact phone is required for patients')
+        .isMobilePhone()
+        .withMessage('Please provide a valid emergency contact phone number'),
+
+    body('medicalHistory')
+        .if(body('role').equals('patient'))
+        .optional()
+        .isLength({ max: 1000 })
+        .withMessage('Medical history cannot exceed 1000 characters'),
+
+    // Super admin validations
+    body('adminLevel')
+        .if(body('role').equals('super_admin'))
+        .isIn(['system', 'platform', 'support'])
+        .withMessage('Invalid admin level selected'),
+
+    body('organization')
+        .if(body('role').equals('super_admin'))
+        .notEmpty()
+        .withMessage('Organization is required for super admins')
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Organization must be between 2 and 100 characters'),
+
+    body('responsibilities')
+        .if(body('role').equals('super_admin'))
+        .notEmpty()
+        .withMessage('Responsibilities are required for super admins')
+        .isLength({ min: 10, max: 1000 })
+        .withMessage('Responsibilities must be between 10 and 1000 characters'),
 
     handleValidationErrors
 ];
