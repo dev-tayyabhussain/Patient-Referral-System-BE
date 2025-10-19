@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hospital',
         required: function () {
-            return ['hospital_admin', 'doctor'].includes(this.role);
+            return this.role === 'doctor';
         }
     },
     licenseNumber: {
@@ -110,6 +110,63 @@ const userSchema = new mongoose.Schema({
         required: function () {
             return this.role === 'doctor';
         }
+    },
+    qualification: {
+        type: String,
+        required: function () {
+            return this.role === 'doctor';
+        }
+    },
+    // Hospital admin fields
+    department: {
+        type: String,
+        required: function () {
+            return this.role === 'hospital_admin';
+        }
+    },
+    position: {
+        type: String,
+        required: function () {
+            return this.role === 'hospital_admin';
+        }
+    },
+    // Patient fields
+    emergencyContact: {
+        type: String,
+        required: function () {
+            return this.role === 'patient';
+        }
+    },
+    emergencyPhone: {
+        type: String,
+        required: function () {
+            return this.role === 'patient';
+        }
+    },
+    medicalHistory: {
+        type: String,
+        maxlength: [1000, 'Medical history cannot exceed 1000 characters']
+    },
+    // Super admin fields
+    adminLevel: {
+        type: String,
+        enum: ['system', 'platform', 'support'],
+        required: function () {
+            return this.role === 'super_admin';
+        }
+    },
+    organization: {
+        type: String,
+        required: function () {
+            return this.role === 'super_admin';
+        }
+    },
+    responsibilities: {
+        type: String,
+        required: function () {
+            return this.role === 'super_admin';
+        },
+        maxlength: [1000, 'Responsibilities cannot exceed 1000 characters']
     }
 }, {
     timestamps: true
