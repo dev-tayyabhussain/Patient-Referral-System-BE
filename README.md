@@ -1,69 +1,79 @@
-# MediNet Backend API
+# MediNet Backend
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+A robust Node.js backend API for the MediNet healthcare management platform. Built with Express.js, MongoDB, and JWT authentication, featuring a comprehensive approval workflow system for hospitals and doctors.
 
-A comprehensive healthcare management API built with Node.js, Express.js, and MongoDB for the MediNet platform.
+## 🚀 Features
 
-## 🚀 Quick Deploy to Render
+### Core Features
+- **RESTful API**: Complete REST API with Swagger documentation
+- **Authentication & Authorization**: JWT-based secure authentication
+- **Approval Workflow**: Multi-level approval system for hospitals and doctors
+- **Role-Based Access Control**: Granular permissions for different user types
+- **Email Notifications**: Automated email system for approvals
+- **Data Validation**: Comprehensive input validation and sanitization
+- **Security**: Password hashing, CORS protection, and security headers
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/your-username/medinet-backend)
+### User Management
+- **User Registration**: Multi-role user registration with validation
+- **Login System**: Secure JWT-based authentication
+- **Profile Management**: User profile updates and management
+- **Password Management**: Secure password reset and change functionality
 
-## 🏗️ Architecture
+### Approval System
+- **Hospital Approval**: Super Admin approves hospital registrations
+- **Doctor Approval**: Hospital Admin approves doctor registrations
+- **Status Tracking**: Real-time approval status management
+- **Email Notifications**: Automated approval/rejection emails
 
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js
-- **Database**: MongoDB (MongoDB Atlas)
-- **Authentication**: JWT with role-based access control
-- **File Storage**: Cloudinary
-- **Email**: NodeMailer
-- **PDF Generation**: PDFKit
-- **Security**: Helmet, CORS, Rate Limiting
+### API Features
+- **Swagger Documentation**: Interactive API documentation
+- **Error Handling**: Comprehensive error handling and logging
+- **Rate Limiting**: API rate limiting for security
+- **CORS Support**: Cross-origin resource sharing configuration
 
-## 🔧 Environment Variables
+## 🛠️ Tech Stack
 
-| Variable                | Description               | Required | Default               |
-| ----------------------- | ------------------------- | -------- | --------------------- |
-| `PORT`                  | Server port               | No       | `5000`                |
-| `NODE_ENV`              | Environment               | No       | `development`         |
-| `MONGO_URI`             | MongoDB connection string | Yes      | -                     |
-| `JWT_SECRET`            | JWT secret key            | Yes      | -                     |
-| `JWT_EXPIRE`            | JWT expiration            | No       | `7d`                  |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name     | Yes      | -                     |
-| `CLOUDINARY_API_KEY`    | Cloudinary API key        | Yes      | -                     |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret     | Yes      | -                     |
-| `EMAIL_USER`            | Email username            | Yes      | -                     |
-| `EMAIL_PASS`            | Email password            | Yes      | -                     |
-| `EMAIL_FROM`            | From email address        | No       | `noreply@medinet.com` |
-| `CORS_ORIGIN`           | CORS allowed origin       | No       | `*`                   |
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - Database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Authentication tokens
+- **Bcrypt** - Password hashing
+- **Nodemailer** - Email service
+- **Express Validator** - Input validation
+- **Swagger** - API documentation
+- **Cors** - Cross-origin resource sharing
 
-## 🚀 Local Development
-
-### Prerequisites
-
-- Node.js 18+
-- MongoDB (local or Atlas)
-- npm or yarn
-
-### Installation
+## 📦 Installation
 
 1. **Clone the repository**
-
    ```bash
-   git clone https://github.com/your-username/medinet-backend.git
+   git clone https://github.com/DaniyalAlam09/medinet-backend.git
    cd medinet-backend
    ```
 
 2. **Install dependencies**
-
    ```bash
    npm install
    ```
 
-3. **Environment setup**
-
+3. **Environment Setup**
    ```bash
-   cp env.example .env
-   # Edit .env with your configuration
+   cp .env.example .env
+   ```
+   Update the environment variables in `.env`:
+   ```env
+   NODE_ENV=development
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/medinet
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRE=7d
+   JWT_COOKIE_EXPIRE=7
+   FRONTEND_URL=http://localhost:5173
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_app_password
    ```
 
 4. **Start development server**
@@ -71,123 +81,136 @@ A comprehensive healthcare management API built with Node.js, Express.js, and Mo
    npm run dev
    ```
 
-## 📚 API Documentation
-
-### Base URL
-
-- **Development**: `http://localhost:5000`
-- **Production**: `https://medinet-backend.onrender.com`
-
-### Authentication Endpoints
-
-| Method | Endpoint                    | Description            |
-| ------ | --------------------------- | ---------------------- |
-| POST   | `/api/auth/register`        | Register new user      |
-| POST   | `/api/auth/login`           | User login             |
-| POST   | `/api/auth/logout`          | User logout            |
-| POST   | `/api/auth/forgot-password` | Request password reset |
-| POST   | `/api/auth/reset-password`  | Reset password         |
-| GET    | `/api/auth/me`              | Get current user       |
-
-### Hospital Endpoints
-
-| Method | Endpoint                    | Description            |
-| ------ | --------------------------- | ---------------------- |
-| GET    | `/api/hospitals`            | List all hospitals     |
-| GET    | `/api/hospitals/:id`        | Get hospital by ID     |
-| POST   | `/api/hospitals`            | Create new hospital    |
-| PUT    | `/api/hospitals/:id`        | Update hospital        |
-| DELETE | `/api/hospitals/:id`        | Delete hospital        |
-| PATCH  | `/api/hospitals/:id/status` | Update hospital status |
-
-### Referral Endpoints
-
-| Method | Endpoint                    | Description            |
-| ------ | --------------------------- | ---------------------- |
-| GET    | `/api/referrals`            | List referrals         |
-| GET    | `/api/referrals/:id`        | Get referral by ID     |
-| POST   | `/api/referrals`            | Create new referral    |
-| PUT    | `/api/referrals/:id`        | Update referral        |
-| PATCH  | `/api/referrals/:id/status` | Update referral status |
-| POST   | `/api/referrals/:id/accept` | Accept referral        |
-| POST   | `/api/referrals/:id/reject` | Reject referral        |
-
-## 🗄️ Database Models
-
-### User Model
-
-- **Fields**: firstName, lastName, email, password, role, phone, dateOfBirth, gender, address, profileImage, hospitalId, licenseNumber, specialization
-- **Roles**: super_admin, hospital_admin, doctor, patient
-- **Indexes**: email, role, hospitalId
-
-### Hospital Model
-
-- **Fields**: name, code, type, level, address, contact, facilities, specialties, capacity, operatingHours, status, licenseNumber
-- **Types**: public, private, clinic, specialty_center
-- **Levels**: primary, secondary, tertiary, quaternary
-
-### Patient Model
-
-- **Fields**: firstName, lastName, dateOfBirth, gender, phone, email, nationalId, patientId, address, emergencyContact, bloodType, allergies, chronicConditions, medications, insurance, medicalHistory
-- **Indexes**: patientId, nationalId, phone, email, currentHospital
-
-### Referral Model
-
-- **Fields**: referralId, patient, referringDoctor, referringHospital, receivingDoctor, receivingHospital, reason, priority, specialty, chiefComplaint, diagnosis, status, timeline, messages
-- **Statuses**: pending, accepted, rejected, completed, cancelled
-- **Priorities**: low, medium, high, urgent
-
-## 🔐 Security Features
-
-- **JWT Authentication** with role-based access control
-- **Password hashing** using bcrypt with salt rounds
-- **Input validation** and sanitization
-- **Rate limiting** to prevent abuse
-- **CORS** configuration
-- **Helmet** for security headers
-- **File upload security** with type and size restrictions
-
 ## 🚀 Deployment
 
-### Render Deployment
+### Render (Recommended)
+1. Connect your GitHub repository to Render
+2. Set environment variables in Render dashboard
+3. Deploy automatically on push to main branch
 
-1. **Connect to Render**
+### Manual Deployment
+```bash
+# Build the application
+npm run build
 
-   - Go to [Render Dashboard](https://dashboard.render.com)
-   - Click "New +" → "Web Service"
-   - Connect your GitHub repository
+# Start production server
+npm start
+```
 
-2. **Configure Environment**
+## 📁 Project Structure
 
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-   - **Node Version**: `18`
+```
+src/
+├── config/             # Configuration files
+│   ├── database.js     # MongoDB connection
+│   ├── email.js        # Email configuration
+│   └── swagger.js      # Swagger documentation
+├── controllers/        # Route controllers
+│   ├── authController.js
+│   ├── approvalController.js
+│   └── hospitalController.js
+├── middleware/         # Custom middleware
+│   ├── auth.js         # Authentication middleware
+│   ├── approval.js     # Approval workflow middleware
+│   └── validation.js   # Input validation
+├── models/             # Database models
+│   ├── User.js         # User model
+│   └── Hospital.js     # Hospital model
+├── routes/             # API routes
+│   ├── auth.js         # Authentication routes
+│   ├── approval.js     # Approval routes
+│   └── hospitals.js    # Hospital routes
+├── utils/              # Utility functions
+└── server.js           # Main server file
+```
 
-3. **Set Environment Variables**
+## 🔐 Authentication & Authorization
 
-   - Add all required environment variables in Render dashboard
-   - Set `NODE_ENV=production`
-   - Set `CORS_ORIGIN` to your frontend URL
+### JWT Authentication
+- Secure token-based authentication
+- Configurable token expiration
+- Refresh token support
+- Token validation middleware
 
-4. **Deploy**
-   - Click "Create Web Service"
-   - Render will automatically deploy your application
+### Role-Based Access Control
+- **Super Admin**: Full system access
+- **Hospital Admin**: Hospital and doctor management
+- **Doctor**: Patient care and appointments
+- **Patient**: Personal health records
 
-### Environment Variables for Production
+### Approval Workflow
+1. **Hospital Registration**:
+   - Hospital registers → Status: `pending`
+   - Super Admin reviews and approves
+   - Hospital Admin gets approved automatically
 
-```env
-NODE_ENV=production
-PORT=10000
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/medinet
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_EXPIRE=7d
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-EMAIL_FROM=noreply@medinet.com
-CORS_ORIGIN=https://medinet-frontend.vercel.app
+2. **Doctor Registration**:
+   - Doctor registers → Status: `pending`
+   - Hospital Admin reviews and approves
+   - Doctor gains access to system
+
+## 📚 API Documentation
+
+### Swagger UI
+Access the interactive API documentation at:
+```
+http://localhost:5000/api-docs
+```
+
+### Key Endpoints
+
+#### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/logout` - User logout
+
+#### Approval System
+- `GET /api/approval/pending-users` - Get pending users
+- `POST /api/approval/approve-user/:id` - Approve user
+- `POST /api/approval/reject-user/:id` - Reject user
+- `GET /api/approval/pending-hospitals` - Get pending hospitals
+- `POST /api/approval/approve-hospital/:id` - Approve hospital
+
+#### Hospitals
+- `POST /api/hospitals` - Create hospital
+- `GET /api/hospitals` - Get all hospitals
+- `GET /api/hospitals/approved` - Get approved hospitals
+- `GET /api/hospitals/:id` - Get hospital by ID
+
+## 🗄️ Database Schema
+
+### User Model
+```javascript
+{
+  firstName: String,
+  lastName: String,
+  email: String (unique),
+  password: String (hashed),
+  role: Enum ['super_admin', 'hospital_admin', 'doctor', 'patient'],
+  phone: String,
+  dateOfBirth: Date,
+  gender: Enum ['male', 'female', 'other'],
+  address: Object,
+  approvalStatus: Enum ['pending', 'approved', 'rejected'],
+  hospitalId: ObjectId (for doctors),
+  // Role-specific fields...
+}
+```
+
+### Hospital Model
+```javascript
+{
+  name: String (unique),
+  email: String (unique),
+  phone: String,
+  address: Object,
+  type: Enum ['public', 'private', 'non-profit', 'government'],
+  specialties: [String],
+  capacity: Object,
+  status: Enum ['pending', 'approved', 'rejected', 'suspended'],
+  isActive: Boolean
+}
 ```
 
 ## 🧪 Testing
@@ -196,45 +219,95 @@ CORS_ORIGIN=https://medinet-frontend.vercel.app
 # Run tests
 npm test
 
-# Run tests with coverage
-npm run test:coverage
-
 # Run tests in watch mode
 npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
 ```
 
-## 📊 Monitoring
+## 📝 Available Scripts
 
-- **Health Check**: `GET /api/health`
-- **Logging**: Morgan for HTTP request logging
-- **Error Tracking**: Centralized error handling
-- **Database Monitoring**: MongoDB connection status
+- `npm run dev` - Start development server with nodemon
+- `npm start` - Start production server
+- `npm run build` - Build the application
+- `npm test` - Run tests
+- `npm run lint` - Run ESLint
+
+## 🔧 Configuration
+
+### Environment Variables
+- `NODE_ENV` - Environment (development/production)
+- `PORT` - Server port (default: 5000)
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - JWT signing secret
+- `JWT_EXPIRE` - JWT expiration time
+- `FRONTEND_URL` - Frontend URL for CORS
+- `EMAIL_*` - Email service configuration
+
+### Database Configuration
+- MongoDB connection with Mongoose
+- Connection pooling
+- Error handling and reconnection
+- Index optimization
+
+## 🛡️ Security Features
+
+### Authentication Security
+- JWT token-based authentication
+- Password hashing with bcrypt
+- Secure cookie configuration
+- Token expiration handling
+
+### API Security
+- CORS protection
+- Rate limiting
+- Input validation and sanitization
+- SQL injection prevention
+- XSS protection
+
+### Data Security
+- Environment variable protection
+- Secure password storage
+- Data encryption in transit
+- Access control and permissions
+
+## 📊 Monitoring & Logging
+
+### Logging
+- Request/response logging
+- Error logging and tracking
+- Performance monitoring
+- Security event logging
+
+### Health Checks
+- Database connection status
+- API endpoint health
+- Service availability
+- Performance metrics
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Related Projects
+## 🆘 Support
 
-- [MediNet Frontend](https://github.com/your-username/medinet-frontend) - React frontend application
-- [MediNet Documentation](https://docs.medinet.com) - Complete documentation
+For support, email support@medinet.com or create an issue in the repository.
 
-## 📞 Support
+## 🔄 Version History
 
-For support and questions:
-
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation
+- **v1.0.0** - Initial release with approval workflow
+- **v0.9.0** - Beta release with basic functionality
+- **v0.8.0** - Alpha release with core features
 
 ---
 
-**Built with ❤️ for better healthcare**
+**MediNet Backend** - Powering healthcare management through robust APIs and secure authentication.
