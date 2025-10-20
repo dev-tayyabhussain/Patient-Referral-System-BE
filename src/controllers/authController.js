@@ -509,7 +509,20 @@ const updateProfile = async (req, res) => {
             dateOfBirth: req.body.dateOfBirth,
             gender: req.body.gender,
             address: req.body.address,
-            profileImage: req.body.profileImage
+            profileImage: req.body.profileImage,
+            // Role specific optional fields
+            licenseNumber: req.body.licenseNumber,
+            specialization: req.body.specialization,
+            yearsOfExperience: req.body.yearsOfExperience,
+            qualification: req.body.qualification,
+            department: req.body.department,
+            position: req.body.position,
+            emergencyContact: req.body.emergencyContact,
+            emergencyPhone: req.body.emergencyPhone,
+            medicalHistory: req.body.medicalHistory,
+            adminLevel: req.body.adminLevel,
+            organization: req.body.organization,
+            responsibilities: req.body.responsibilities
         };
 
         // Remove undefined fields

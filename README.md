@@ -5,6 +5,7 @@ A robust Node.js backend API for the MediNet healthcare management platform. Bui
 ## 🚀 Features
 
 ### Core Features
+
 - **RESTful API**: Complete REST API with Swagger documentation
 - **Authentication & Authorization**: JWT-based secure authentication
 - **Approval Workflow**: Multi-level approval system for hospitals and doctors
@@ -14,18 +15,21 @@ A robust Node.js backend API for the MediNet healthcare management platform. Bui
 - **Security**: Password hashing, CORS protection, and security headers
 
 ### User Management
+
 - **User Registration**: Multi-role user registration with validation
 - **Login System**: Secure JWT-based authentication
 - **Profile Management**: User profile updates and management
 - **Password Management**: Secure password reset and change functionality
 
 ### Approval System
+
 - **Hospital Approval**: Super Admin approves hospital registrations
 - **Doctor Approval**: Hospital Admin approves doctor registrations
 - **Status Tracking**: Real-time approval status management
 - **Email Notifications**: Automated approval/rejection emails
 
 ### API Features
+
 - **Swagger Documentation**: Interactive API documentation
 - **Error Handling**: Comprehensive error handling and logging
 - **Rate Limiting**: API rate limiting for security
@@ -47,21 +51,26 @@ A robust Node.js backend API for the MediNet healthcare management platform. Bui
 ## 📦 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/DaniyalAlam09/medinet-backend.git
    cd medinet-backend
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Setup**
+
    ```bash
    cp .env.example .env
    ```
+
    Update the environment variables in `.env`:
+
    ```env
    NODE_ENV=development
    PORT=5000
@@ -84,11 +93,13 @@ A robust Node.js backend API for the MediNet healthcare management platform. Bui
 ## 🚀 Deployment
 
 ### Render (Recommended)
+
 1. Connect your GitHub repository to Render
 2. Set environment variables in Render dashboard
 3. Deploy automatically on push to main branch
 
 ### Manual Deployment
+
 ```bash
 # Build the application
 npm run build
@@ -127,19 +138,23 @@ src/
 ## 🔐 Authentication & Authorization
 
 ### JWT Authentication
+
 - Secure token-based authentication
 - Configurable token expiration
 - Refresh token support
 - Token validation middleware
 
 ### Role-Based Access Control
+
 - **Super Admin**: Full system access
 - **Hospital Admin**: Hospital and doctor management
 - **Doctor**: Patient care and appointments
 - **Patient**: Personal health records
 
 ### Approval Workflow
+
 1. **Hospital Registration**:
+
    - Hospital registers → Status: `pending`
    - Super Admin reviews and approves
    - Hospital Admin gets approved automatically
@@ -152,7 +167,9 @@ src/
 ## 📚 API Documentation
 
 ### Swagger UI
+
 Access the interactive API documentation at:
+
 ```
 http://localhost:5000/api-docs
 ```
@@ -160,12 +177,14 @@ http://localhost:5000/api-docs
 ### Key Endpoints
 
 #### Authentication
+
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `GET /api/auth/me` - Get current user
 - `POST /api/auth/logout` - User logout
 
 #### Approval System
+
 - `GET /api/approval/pending-users` - Get pending users
 - `POST /api/approval/approve-user/:id` - Approve user
 - `POST /api/approval/reject-user/:id` - Reject user
@@ -173,6 +192,7 @@ http://localhost:5000/api-docs
 - `POST /api/approval/approve-hospital/:id` - Approve hospital
 
 #### Hospitals
+
 - `POST /api/hospitals` - Create hospital
 - `GET /api/hospitals` - Get all hospitals
 - `GET /api/hospitals/approved` - Get approved hospitals
@@ -181,6 +201,7 @@ http://localhost:5000/api-docs
 ## 🗄️ Database Schema
 
 ### User Model
+
 ```javascript
 {
   firstName: String,
@@ -199,6 +220,7 @@ http://localhost:5000/api-docs
 ```
 
 ### Hospital Model
+
 ```javascript
 {
   name: String (unique),
@@ -237,6 +259,7 @@ npm run test:coverage
 ## 🔧 Configuration
 
 ### Environment Variables
+
 - `NODE_ENV` - Environment (development/production)
 - `PORT` - Server port (default: 5000)
 - `MONGODB_URI` - MongoDB connection string
@@ -246,6 +269,7 @@ npm run test:coverage
 - `EMAIL_*` - Email service configuration
 
 ### Database Configuration
+
 - MongoDB connection with Mongoose
 - Connection pooling
 - Error handling and reconnection
@@ -254,12 +278,14 @@ npm run test:coverage
 ## 🛡️ Security Features
 
 ### Authentication Security
+
 - JWT token-based authentication
 - Password hashing with bcrypt
 - Secure cookie configuration
 - Token expiration handling
 
 ### API Security
+
 - CORS protection
 - Rate limiting
 - Input validation and sanitization
@@ -267,6 +293,7 @@ npm run test:coverage
 - XSS protection
 
 ### Data Security
+
 - Environment variable protection
 - Secure password storage
 - Data encryption in transit
@@ -275,12 +302,14 @@ npm run test:coverage
 ## 📊 Monitoring & Logging
 
 ### Logging
+
 - Request/response logging
 - Error logging and tracking
 - Performance monitoring
 - Security event logging
 
 ### Health Checks
+
 - Database connection status
 - API endpoint health
 - Service availability

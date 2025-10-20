@@ -15,6 +15,7 @@ const {
 } = require('../controllers/authController');
 
 const { protect, authorize } = require('../middleware/auth');
+const { upload } = require('../middleware/upload');
 const {
     validateRegister,
     validateLogin,
@@ -347,6 +348,47 @@ router.get('/me', protect, getMe);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
+/**
+ * @swagger
+ * /api/auth/profile/image:
+ *   post:
+ *     summary: Upload or replace profile image
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Profile image uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 url:
+ *                   type: string
+ *       400:
+ *         description: Invalid file
+ */
+router.post('/profile/image', protect, upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Image file is required' });
+    }
+    const url = `${req.protocol}://${req.get('host')}/uploads/profiles/${req.file.filename}`;
+    return res.json({ success: true, url });
+});
+
 router.put('/profile', protect, validateUpdateProfile, updateProfile);
 
 /**
