@@ -2,9 +2,9 @@ name: Deploy to Render
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/approval-workflow]
   pull_request:
-    branches: [main]
+    branches: [main, feature/approval-workflow]
 
 permissions:
   contents: read

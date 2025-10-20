@@ -11,7 +11,7 @@ const {
     getApprovedHospitals
 } = require('../controllers/hospitalController');
 
-const { protect, authorize } = require('../middleware/auth');
+const { protect, authorize, protectWithApproval } = require('../middleware/auth');
 const { validateHospital } = require('../middleware/validation');
 
 /**
@@ -178,7 +178,7 @@ router.get('/', protect, authorize('super_admin'), getHospitals);
  *       404:
  *         description: Hospital not found
  */
-router.get('/:id', protect, getHospitalById);
+router.get('/:id', protectWithApproval, getHospitalById);
 
 /**
  * @swagger
@@ -226,7 +226,7 @@ router.get('/:id', protect, getHospitalById);
  *       404:
  *         description: Hospital not found
  */
-router.put('/:id', protect, authorize('super_admin', 'hospital_admin'), validateHospital, updateHospital);
+router.put('/:id', protectWithApproval, authorize('super_admin', 'hospital_admin'), validateHospital, updateHospital);
 
 /**
  * @swagger

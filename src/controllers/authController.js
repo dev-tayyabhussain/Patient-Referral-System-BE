@@ -70,7 +70,16 @@ const register = async (req, res) => {
             hospitalId,
             licenseNumber,
             specialization,
-            yearsOfExperience
+            yearsOfExperience,
+            department,
+            position,
+            qualification,
+            emergencyContact,
+            emergencyPhone,
+            medicalHistory,
+            adminLevel,
+            organization,
+            responsibilities
         } = req.body;
 
         // Validation
@@ -118,11 +127,11 @@ const register = async (req, res) => {
         };
 
         // Add role-specific fields
-        if (['hospital_admin', 'doctor'].includes(role)) {
+        if (role === 'doctor') {
             if (!hospitalId) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Hospital ID is required for this role'
+                    message: 'Hospital ID is required for doctors'
                 });
             }
             userData.hospitalId = hospitalId;
@@ -138,6 +147,53 @@ const register = async (req, res) => {
             userData.licenseNumber = licenseNumber;
             userData.specialization = specialization;
             userData.yearsOfExperience = yearsOfExperience;
+            userData.qualification = qualification;
+        }
+
+        if (role === 'hospital_admin') {
+            if (!department || !position) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Department and position are required for hospital admins'
+                });
+            }
+            userData.department = department;
+            userData.position = position;
+        }
+
+        if (role === 'patient') {
+            if (!emergencyContact || !emergencyPhone) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Emergency contact and phone are required for patients'
+                });
+            }
+            userData.emergencyContact = emergencyContact;
+            userData.emergencyPhone = emergencyPhone;
+            userData.medicalHistory = medicalHistory;
+        }
+
+        if (role === 'super_admin') {
+            if (!adminLevel || !organization || !responsibilities) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Admin level, organization, and responsibilities are required for super admins'
+                });
+            }
+            userData.adminLevel = adminLevel;
+            userData.organization = organization;
+            userData.responsibilities = responsibilities;
+        }
+
+        // Set approval status based on role
+        if (userData.role === 'hospital_admin') {
+            userData.approvalStatus = 'pending'; // Will be approved when hospital is approved
+        } else if (userData.role === 'doctor') {
+            userData.approvalStatus = 'pending'; // Needs hospital admin approval
+        } else if (userData.role === 'patient') {
+            userData.approvalStatus = 'approved'; // Patients don't need approval
+        } else if (userData.role === 'super_admin') {
+            userData.approvalStatus = 'approved'; // Super admins are auto-approved
         }
 
         const user = await User.create(userData);
